@@ -45,11 +45,15 @@ public class MainMenu {
                     //Edit Contact
                     System.out.println("Please enter contact name to edit: ");
                     String editName = scanner.nextLine();
-                    System.out.println("Please enter new phone number: ");
-                    String editPhoneNumber = scanner.nextLine();
-                    System.out.println("Please enter new email: ");
-                    String editEmail = scanner.nextLine();
-                    addressBook.editContact(editName,editPhoneNumber,editEmail);
+                    if (addressBook.contactExists(editName)) {
+                        System.out.println("Please enter new phone number: ");
+                        String editPhoneNumber = scanner.nextLine();
+                        System.out.println("Please enter new email: ");
+                        String editEmail = scanner.nextLine();
+                        addressBook.editContact(editName,editPhoneNumber,editEmail);
+                    } else {
+                        System.out.println("Contact does not exist");
+                    }
                     break;
                 case 5:
                     //Delete Contact
