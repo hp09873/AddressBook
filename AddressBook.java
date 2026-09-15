@@ -1,69 +1,93 @@
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class AddressBook {
-    ArrayList<Contact> contacts = new ArrayList<Contact>();
+    //Encapsulation: to keep list private
+    private final List<Contact> contacts = new ArrayList<>();
 
-    public void addContact(Contact contact) {
+    public boolean addContact(Contact contact) {
+        if (contact == null) {
+            return false;
+        }
+        if (contact.getName() == null || contact.getName().trim().isEmpty()) {
+            return false;
+        }
+        //Prevent duplicate contacts
+        if (contactExists(contact.getName())){
+            return false;
+        }
         contacts.add(contact);
-        System.out.println("Contact added to the AddressBook: " + contact);
+        return true;
     }
-
+    //Display all contacts
     public void showContacts() {
-        for (Contact contact : contacts){
-
-            System.out.println(contact.name + " " + contact.phoneNumber + " " + contact.email);
+        if (contacts.isEmpty()) {
+            System.out.println("AddressBook is empty");
+        }
+        for (Contact contact : contacts) {
+            System.out.println(contact);
         }
     }
+    //Search for a contact
     public void searchContacts(String name){
+        if (name == null || name.trim().isEmpty()) {
+            System.out.println("Please enter a valid name");
+            return;
+        }
         boolean found = false;
-        for (Contact contact : contacts){
-            if (contact.name.equalsIgnoreCase(name)){
-                System.out.println(contact.name + " " + contact.phoneNumber + " " + contact.email);
+        for (Contact contact : contacts) {
+            if(contact.getName().trim().equalsIgnoreCase(name.trim())){
+                System.out.println(contact);
                 found = true;
                 break;
             }
         }
-        if (!found){
+        if (!found) {
             System.out.println("Contact not found");
         }
     }
     public boolean contactExists(String name){
-        for (Contact contact : contacts){
-            if (contact.name.equalsIgnoreCase(name)){
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
+        for (Contact contact : contacts) {
+            if(contact.getName().trim().equalsIgnoreCase(name.trim())){
                 return true;
             }
         }
         return false;
     }
-    public void editContact(String name,String phoneNumber,String email ){
-        for (Contact contact : contacts){
-            if (contact.name.equalsIgnoreCase(name)){
-                contact.phoneNumber = phoneNumber;
-                contact.email = email;
-                System.out.println("Contact edited successfully");
-                System.out.println(contact.name + " " + contact.phoneNumber + " " + contact.email);
-                return;
-            }
+    //Edit an Existing Contact
+    public boolean editContact(String name,String phoneNumber,String email ){
+        if  (name == null || name.trim().isEmpty()) {
+        return false;
         }
-        System.out.println("Contact not found");
-    }
-    public void deleteContact(String name){
-        Iterator<Contact> iterator = contacts.iterator();
-        boolean found = false;
-        while (iterator.hasNext()){
-            Contact contact = iterator.next();
-            if (contact.name.trim().equalsIgnoreCase(name)){
-                iterator.remove();
-                System.out.println("Contact deleted successfully");
-                found = true;
-                break;
-            }
-        }
-        if (!found){
-            System.out.println("Contact not found");
-        }
+        for (Contact contact : contacts) {
+            if(contact.getName().trim().equalsIgnoreCase(name.trim())){
 
+                contact.setName(phoneNumber);
+                contact.setEmail(email);
+
+                return true;
+            }
+        }
+        return false;
+    }
+    //Delete a Contact
+    public boolean deleteContact(String name){
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
+        Iterator<Contact> iterator = contacts.iterator();
+        while (iterator.hasNext()) {
+            Contact contact = iterator.next();
+            if (contact.getName().trim().equalsIgnoreCase(name.trim())) {
+                iterator.remove();
+                return true;
+            }
+        }
+        return false;
     }
     }
 

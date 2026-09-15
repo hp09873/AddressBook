@@ -27,9 +27,14 @@ public class MainMenu {
                     String phoneNumber = scanner.nextLine();
                     System.out.println("Please enter your email: ");
                     String email = scanner.nextLine();
+
                     Contact contact1 = new Contact(name, phoneNumber, email);
-                    addressBook.addContact(contact1);
-                    addressBook.showContacts();
+                    if(addressBook.addContact(contact1)) {
+                        System.out.println("Contact added successfully!");
+                        addressBook.showContacts();
+                    } else {
+                        System.out.println("Contact already exists or invalid contact!");
+                    }
                     break;
                 case 2:
                     //Show Contact
@@ -50,15 +55,22 @@ public class MainMenu {
                         String editPhoneNumber = scanner.nextLine();
                         System.out.println("Please enter new email: ");
                         String editEmail = scanner.nextLine();
-                        addressBook.editContact(editName,editPhoneNumber,editEmail);
-                    } else {
-                        System.out.println("Contact does not exist");
+                        if(addressBook.editContact(editName, editPhoneNumber, editEmail)) {
+                            System.out.println("Contact edited successfully!");
+                        } else {
+                            System.out.println("Contact not found!");
+                        }
                     }
                     break;
                 case 5:
                     //Delete Contact
                     System.out.println("Please enter contact name to delete : ");
-                    addressBook.deleteContact(scanner.nextLine());
+                    String deleteName = scanner.nextLine();
+                    if(addressBook.deleteContact(deleteName)) {
+                        System.out.println("Contact deleted successfully!");
+                    } else {
+                        System.out.println("Contact does not exist!");
+                    }
                     break;
                     case 6:
                         System.out.println("Exiting AddressBook...");
