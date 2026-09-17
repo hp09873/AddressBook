@@ -9,9 +9,24 @@ public class AddressBook {
     //Used to generate unique contact ids
     private int nextId = 1;
 
+    //Name Input Validation
+    public boolean isValidName(String name){
+        return name != null && !name.trim().isEmpty() && name.trim().matches("[a-zA-Z ]+");
+    }
+    //Number Validation
+    public boolean isValidPhoneNumber(String phoneNumber){
+        return phoneNumber != null && phoneNumber.matches("\\d{10}");
+    }
+    //Email Validation
+    public boolean isValidEmail(String email){
+        return email != null && email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    }
+
     // Add a contact
     public boolean addContact(String name, String phoneNumber, String email) {
-        if (name == null || name.trim().isEmpty()){return false;}
+        if (!isValidName(name)){return false;}
+        if (!isValidPhoneNumber(phoneNumber)){return false;}
+        if (!isValidEmail(email)){return false;}
         for (Contact existingContact : contacts.values()) {
             if(existingContact.getPhoneNumber().equals(phoneNumber)
             && existingContact.getEmail().equals(email)){
@@ -23,6 +38,7 @@ public class AddressBook {
         nextId++;
         return true;
     }
+
     //Find Contact By Name
     public Contact findContactByName(String name) {
         for (Contact contact : contacts.values()) {
@@ -32,6 +48,7 @@ public class AddressBook {
         }
         return null;
     }
+
     //Find all contacts by the name list
     public List<Contact>findContactsByName(String name) {
         List<Contact> matchingContacts = new ArrayList<>();
@@ -42,6 +59,7 @@ public class AddressBook {
         }
         return matchingContacts;
     }
+
     //Display all contacts
     public void showContacts() {
         if (contacts.isEmpty()) {
@@ -52,6 +70,7 @@ public class AddressBook {
             System.out.println(contact);
         }
     }
+
     //Search for a contact
     public void searchContacts(String name){
         if (name == null || name.trim().isEmpty()) {
@@ -72,8 +91,18 @@ public class AddressBook {
     public boolean contactExists(int contactId) {
         return contacts.containsKey(contactId);
     }
+
     //Edit an Existing Contact
     public boolean editContact(int contactId,String newName, String phoneNumber,String email ){
+        if (!isValidName(newName)){
+            return false;
+        }
+        if (!isValidPhoneNumber(phoneNumber)){
+            return false;
+        }
+        if (!isValidEmail(email)){
+            return false;
+        }
         Contact contact = contacts.get(contactId);
         if (contact == null) {
             return false;
@@ -83,10 +112,12 @@ public class AddressBook {
         contact.setEmail(email);
         return true;
     }
+
     //Find Contact by ID
     public Contact findContactById(int contactId){
         return contacts.get(contactId);
     }
+
     //Delete a Contact
     public boolean deleteContact(int contactId){
         if (! contacts.containsKey(contactId)) {

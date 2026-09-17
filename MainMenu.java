@@ -17,14 +17,24 @@ public class MainMenu {
             System.out.println("5. Delete Contact");
             System.out.println("6. Exit");
             System.out.println("Please enter your choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+
+            String  input = scanner.nextLine();
+            while (!input.matches("[1-6]")) {
+                System.out.println("Invalid Choice! Please enter a number between 1 and 6: ");
+                input = scanner.nextLine();
+            }
+            int choice = Integer.parseInt(input);
             switch (choice) {
                 case 1:
                     // Add Contact
 
                     System.out.println("Please enter your name: ");
                     String name = scanner.nextLine();
+
+                    while (!addressBook.isValidName(name)) {
+                        System.out.println("Invalid name! Please a name using letters and space only: ");
+                        name = scanner.nextLine();
+                    }
 
                     Contact existingContact = addressBook.findContactByName(name);
 
@@ -66,9 +76,17 @@ public class MainMenu {
 
                             System.out.println("Please enter your phone number: ");
                             String phoneNumber = scanner.nextLine();
+                            while (!addressBook.isValidPhoneNumber(phoneNumber)) {
+                                System.out.println("Invalid phone number! Please a valid phone number!");
+                                phoneNumber = scanner.nextLine();
+                            }
 
                             System.out.println("Please enter your email: ");
                             String email = scanner.nextLine();
+                            while (!addressBook.isValidEmail(email)) {
+                                System.out.println("Invalid email! Please a valid email!");
+                                email = scanner.nextLine();
+                            }
 
                             if (addressBook.addContact(name, phoneNumber, email)) {
 
@@ -84,9 +102,17 @@ public class MainMenu {
 
                         System.out.println("Please enter your phone number: ");
                         String phoneNumber = scanner.nextLine();
+                        while  (!addressBook.isValidPhoneNumber(phoneNumber)) {
+                            System.out.println("Invalid phone number! Please a valid phone number!");
+                            phoneNumber = scanner.nextLine();
+                        }
 
                         System.out.println("Please enter your email: ");
                         String email = scanner.nextLine();
+                        while (!addressBook.isValidEmail(email)) {
+                            System.out.println("Invalid email! Please a valid email!");
+                            email = scanner.nextLine();
+                        }
 
                         if (addressBook.addContact(name, phoneNumber, email)) {
 
@@ -114,6 +140,10 @@ public class MainMenu {
 
                     System.out.println("Please enter the name of the contact to edit: ");
                     String currentName = scanner.nextLine();
+                    while (!addressBook.isValidName(currentName)) {
+                        System.out.println("Invalid name! Please a name using letters and space only!");
+                        currentName = scanner.nextLine();
+                    }
 
                     List<Contact> contactsToEdit =
                             addressBook.findContactsByName(currentName);
@@ -167,12 +197,24 @@ public class MainMenu {
 
                         System.out.println("Please enter new contact name: ");
                         String newName = scanner.nextLine();
+                        while (!addressBook.isValidName(newName)) {
+                            System.out.println("Invalid name! Please a name using letters and space only!");
+                            newName = scanner.nextLine();
+                        }
 
                         System.out.println("Please enter new phone number: ");
                         String editPhoneNumber = scanner.nextLine();
+                        while (!addressBook.isValidPhoneNumber(editPhoneNumber)) {
+                            System.out.println("Invalid phone number! Please a valid phone number!");
+                            editPhoneNumber = scanner.nextLine();
+                        }
 
                         System.out.println("Please enter new email: ");
                         String editEmail = scanner.nextLine();
+                        while (!addressBook.isValidEmail(editEmail)) {
+                            System.out.println("Invalid email! Please a valid email!");
+                            editEmail = scanner.nextLine();
+                        }
 
                         if (addressBook.editContact(
                                 contactToEdit.getContactId(),
