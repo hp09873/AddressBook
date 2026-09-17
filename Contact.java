@@ -1,13 +1,19 @@
 public class Contact {
+    private final int contactId;
     private String name;
     private String phoneNumber;
     private String email;
 
 
-    public Contact(String name, String phoneNumber, String email) {
+    public Contact(int contactId, String name, String phoneNumber, String email) {
+        this.contactId = contactId;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
+    }
+    //ContactId Getter
+    public int getContactId() {
+        return contactId;
     }
     //Getter for Name
     public String getName() {
@@ -35,6 +41,6 @@ public class Contact {
     }
     @Override
     public String toString() {
-        return   name + " " + phoneNumber + " " + email;
+        return "ID:" + contactId +" | Name "+ name + " | Phone " + phoneNumber + " | Email " + email;
     }
 }

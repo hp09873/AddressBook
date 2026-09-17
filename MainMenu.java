@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.List;
 public class MainMenu {
     public static void main(String[] args) {
 
@@ -20,21 +21,83 @@ public class MainMenu {
             scanner.nextLine();
             switch (choice) {
                 case 1:
-                    //Add Contact
+                    // Add Contact
+
                     System.out.println("Please enter your name: ");
                     String name = scanner.nextLine();
-                    System.out.println("Please enter your phone number: ");
-                    String phoneNumber = scanner.nextLine();
-                    System.out.println("Please enter your email: ");
-                    String email = scanner.nextLine();
 
-                    Contact contact1 = new Contact(name, phoneNumber, email);
-                    if(addressBook.addContact(contact1)) {
-                        System.out.println("Contact added successfully!");
-                        addressBook.showContacts();
+                    Contact existingContact = addressBook.findContactByName(name);
+
+                    if (existingContact != null) {
+
+                        System.out.println("A contact with this name already exists:");
+                        System.out.println(existingContact);
+
+                        System.out.println("Is this the contact you want? (Yes/No)");
+                        String answer = scanner.nextLine();
+
+                        if (answer.equalsIgnoreCase("yes")) {
+
+                            System.out.println("Please enter new contact name: ");
+                            String newName = scanner.nextLine();
+
+                            System.out.println("Please enter new contact phone: ");
+                            String phoneNumber = scanner.nextLine();
+
+                            System.out.println("Please enter new contact email: ");
+                            String email = scanner.nextLine();
+
+                            if (addressBook.editContact(
+                                    existingContact.getContactId(),
+                                    newName,
+                                    phoneNumber,
+                                    email)) {
+
+                                System.out.println("Contact has been edited successfully!");
+
+                            } else {
+
+                                System.out.println("Could not edit contact!");
+                            }
+
+                        } else {
+
+                            System.out.println("Okay, let's create a new contact.");
+
+                            System.out.println("Please enter your phone number: ");
+                            String phoneNumber = scanner.nextLine();
+
+                            System.out.println("Please enter your email: ");
+                            String email = scanner.nextLine();
+
+                            if (addressBook.addContact(name, phoneNumber, email)) {
+
+                                System.out.println("Contact added successfully!");
+
+                            } else {
+
+                                System.out.println("Contact already exists!");
+                            }
+                        }
+
                     } else {
-                        System.out.println("Contact already exists or invalid contact!");
+
+                        System.out.println("Please enter your phone number: ");
+                        String phoneNumber = scanner.nextLine();
+
+                        System.out.println("Please enter your email: ");
+                        String email = scanner.nextLine();
+
+                        if (addressBook.addContact(name, phoneNumber, email)) {
+
+                            System.out.println("Contact added successfully!");
+
+                        } else {
+
+                            System.out.println("Contact already exists!");
+                        }
                     }
+
                     break;
                 case 2:
                     //Show Contact
@@ -47,30 +110,157 @@ public class MainMenu {
                     addressBook.searchContacts(searchName);
                     break;
                 case 4:
-                    //Edit Contact
-                    System.out.println("Please enter contact name to edit: ");
-                    String editName = scanner.nextLine();
-                    if (addressBook.contactExists(editName)) {
+                    // Edit Contact
+
+                    System.out.println("Please enter the name of the contact to edit: ");
+                    String currentName = scanner.nextLine();
+
+                    List<Contact> contactsToEdit =
+                            addressBook.findContactsByName(currentName);
+
+                    if (contactsToEdit.isEmpty()) {
+
+                        System.out.println("Contact not found!");
+
+                    } else {
+
+                        Contact contactToEdit;
+
+                        if (contactsToEdit.size() == 1) {
+
+                            // Only one contact has this name
+                            contactToEdit = contactsToEdit.get(0);
+
+                            System.out.println("Contact found:");
+                            System.out.println(contactToEdit);
+
+                        } else {
+
+                            // Multiple contacts have the same name
+                            System.out.println("Multiple contacts found:");
+
+                            for (Contact contact : contactsToEdit) {
+                                System.out.println(contact);
+                            }
+
+                            System.out.println(
+                                    "Please enter the ID of the contact you want to edit: "
+                            );
+
+                            int editId = scanner.nextInt();
+                            scanner.nextLine();
+
+                            contactToEdit = null;
+
+                            for (Contact contact : contactsToEdit) {
+                                if (contact.getContactId() == editId) {
+                                    contactToEdit = contact;
+                                    break;
+                                }
+                            }
+
+                            if (contactToEdit == null) {
+                                System.out.println("Invalid contact ID!");
+                                break;
+                            }
+                        }
+
+                        System.out.println("Please enter new contact name: ");
+                        String newName = scanner.nextLine();
+
                         System.out.println("Please enter new phone number: ");
                         String editPhoneNumber = scanner.nextLine();
+
                         System.out.println("Please enter new email: ");
                         String editEmail = scanner.nextLine();
-                        if(addressBook.editContact(editName, editPhoneNumber, editEmail)) {
+
+                        if (addressBook.editContact(
+                                contactToEdit.getContactId(),
+                                newName,
+                                editPhoneNumber,
+                                editEmail)) {
+
                             System.out.println("Contact edited successfully!");
+
                         } else {
-                            System.out.println("Contact not found!");
+                            System.out.println("Could not edit contact!");
                         }
                     }
+
                     break;
                 case 5:
-                    //Delete Contact
-                    System.out.println("Please enter contact name to delete : ");
+                    // Delete Contact
+
+                    System.out.println("Please enter the name of the contact to delete: ");
                     String deleteName = scanner.nextLine();
-                    if(addressBook.deleteContact(deleteName)) {
-                        System.out.println("Contact deleted successfully!");
+
+                    List<Contact> contactsToDelete =
+                            addressBook.findContactsByName(deleteName);
+
+                    if (contactsToDelete.isEmpty()) {
+
+                        System.out.println("Contact not found!");
+
+                    } else if (contactsToDelete.size() == 1) {
+
+                        Contact contactToDelete = contactsToDelete.get(0);
+
+                        System.out.println("Contact found:");
+                        System.out.println(contactToDelete);
+
+                        System.out.println("Is this the contact you want to delete? (Yes/No)");
+                        String answer = scanner.nextLine();
+
+                        if (answer.equalsIgnoreCase("yes")) {
+
+                            if (addressBook.deleteContact(contactToDelete.getContactId())) {
+                                System.out.println("Contact deleted successfully!");
+                            }
+
+                        } else {
+
+                            System.out.println("Okay, contact was not deleted.");
+                        }
+
                     } else {
-                        System.out.println("Contact does not exist!");
+
+                        System.out.println("Multiple contacts found:");
+
+                        for (Contact contact : contactsToDelete) {
+                            System.out.println(contact);
+                        }
+
+                        System.out.println("Please enter the ID of the contact you want to delete: ");
+                        int deleteId = scanner.nextInt();
+                        scanner.nextLine();
+
+                        Contact contactToDelete = addressBook.findContactById(deleteId);
+
+                        if (contactToDelete != null) {
+
+                            System.out.println("You selected:");
+                            System.out.println(contactToDelete);
+
+                            System.out.println("Is this the contact you want to delete? (Yes/No)");
+                            String answer = scanner.nextLine();
+
+                            if (answer.equalsIgnoreCase("yes")) {
+
+                                if (addressBook.deleteContact(deleteId)) {
+                                    System.out.println("Contact deleted successfully!");
+                                }
+
+                            } else {
+
+                                System.out.println("Okay, contact was not deleted.");
+                            }
+
+                        } else {
+
+                            System.out.println("Contact ID does not exist!");
+                        }
                     }
+
                     break;
                     case 6:
                         System.out.println("Exiting AddressBook...");
