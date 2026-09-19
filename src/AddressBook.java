@@ -41,6 +41,7 @@ public class AddressBook {
 
     //Find Contact By Name
     public Contact findContactByName(String name) {
+        if (name == null) return null;
         for (Contact contact : contacts.values()) {
             if (contact.getName().equalsIgnoreCase(name.trim())){
                 return contact;
@@ -51,6 +52,7 @@ public class AddressBook {
 
     //Find all contacts by the name list
     public List<Contact>findContactsByName(String name) {
+        if (name == null) return new ArrayList<>();
         List<Contact> matchingContacts = new ArrayList<>();
         for (Contact contact : contacts.values()) {
             if (contact.getName().equalsIgnoreCase(name.trim())){
