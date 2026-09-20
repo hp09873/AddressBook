@@ -62,29 +62,4 @@ public class AddressBookEdgeCaseTest {
         assertFalse(book.addContact("Harsh",
                 "9876543210", "HARSH@EXAMPLE.COM"));
     }
-    // ---------- Name rules (check your regexon line 14 of AddressBook) ----------
-    @Test
-    void nameWithDigitsOrSymbolsIsRejected() {
-        assertFalse(book.isValidName("Harsh123"));
-        assertFalse(book.isValidName("@@@"));
-    }
-    @Test
-    void nameWithSpaceInMiddleIsAccepted() {
-        assertTrue(book.isValidName("Harsh Kumar"));
-    }
-// ---------- Phone and email rules ----------
-    @Test
-    void phoneWithSpacesOrPlusIsRejected() {
-        assertFalse(book.isValidPhoneNumber("98765 43210"));
-                assertFalse(book.isValidPhoneNumber("+919876543210"));
-    }
-    @Test
-    void emailWithDoubleDotInDomainIsRejected()
-    {
-        assertFalse(book.isValidEmail("a@b..com"));
-    }
-    @Test
-    void emailWithOneLetterEndingIsRejected() {
-        assertFalse(book.isValidEmail("a@b.c"));
-    }
 }

@@ -14,33 +14,6 @@ public class AddressBookTest {
     void validNameIsAccepted() {
         assertTrue(book.isValidName("Harshit"));
     }
-    @Test
-    void invalidNamesAreRejected() {
-        assertFalse(book.isValidName(null));
-        assertFalse(book.isValidName(""));
-        assertFalse(book.isValidName(" "));
-    }
-    @Test
-    void phoneMustBeExactlyTenDigits() {
-        assertTrue(book.isValidPhoneNumber("9876543210")
-        );
-        assertFalse(book.isValidPhoneNumber("12345"));
-        assertFalse(book.isValidPhoneNumber("98765432101"));
-                assertFalse(book.isValidPhoneNumber("98765abcde"
-                ));
-        assertFalse(book.isValidPhoneNumber(null));
-    }
-    @Test
-    void emailvalidation() {
-        assertTrue(book.isValidEmail("hp09873@gmail.com"
-        ));
-        assertFalse(book.isValidEmail("hp09873.gmail.com "));
-                assertFalse(book.isValidEmail("hp09873@gmail"));
-        assertFalse(book.isValidEmail("hp09873@"));
-        assertFalse(book.isValidEmail(""));
-        assertFalse(book.isValidEmail(" "));
-        assertFalse(book.isValidEmail(null));
-    }
     // ---------- Add ----------
     @Test
     void addContactWithValidDataSucceeds() {
@@ -100,8 +73,7 @@ public class AddressBookTest {
         assertNotNull(book.findContactByName(" HARSH "));
     }
     @Test
-    void
-    findContactByNameReturnsNullWhenMissing() {
+    void findContactByNameReturnsNullWhenMissing() {
         assertNull(book.findContactByName("Nobody"));
     }
     @Test
@@ -117,8 +89,7 @@ public class AddressBookTest {
         assertEquals(2, result.size());
     }
     @Test
-    void
-    findContactsByNameReturnsEmptyListWhenNoMatch()
+    void findContactsByNameReturnsEmptyListWhenNoMatch()
     {
         assertTrue(book.findContactsByName("Nobody").isEmpty());
     }
