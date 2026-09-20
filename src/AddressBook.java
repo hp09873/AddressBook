@@ -19,7 +19,7 @@ public class AddressBook {
     }
     //Email Validation
     public boolean isValidEmail(String email){
-        return email != null && email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+        return email != null && email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*\\.[A-Za-z]{2,}$");
     }
 
     // Add a contact
@@ -29,7 +29,7 @@ public class AddressBook {
         if (!isValidEmail(email)){return false;}
         for (Contact existingContact : contacts.values()) {
             if(existingContact.getPhoneNumber().equals(phoneNumber)
-            && existingContact.getEmail().equals(email)){
+            && existingContact.getEmail().equalsIgnoreCase(email)){
                 return false;
             }
         }
@@ -109,7 +109,12 @@ public class AddressBook {
         if (contact == null) {
             return false;
         }
-        contact.setName(newName);
+        for (Contact existing : contacts.values()) {
+            if (existing.getContactId() != contactId && existing.getPhoneNumber().equals(phoneNumber) && existing.getEmail().equalsIgnoreCase(email)){
+                return false;
+            }
+        }
+        contact.setName(newName.trim());
         contact.setPhoneNumber(phoneNumber);
         contact.setEmail(email);
         return true;
