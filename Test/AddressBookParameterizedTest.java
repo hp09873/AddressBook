@@ -47,13 +47,13 @@ public class AddressBookParameterizedTest {
     @ParameterizedTest(name = "name \"{0}\" is rejected")
     @NullAndEmptySource
     @ValueSource(strings = {" ", "Harsh123",
-            "@@@"})
+            "@@@", "-", "'", "Harsh--Kumar"})
     void invalidNamesAreRejected(String name) {
         assertFalse(book.isValidName(name));
     }
     @ParameterizedTest(name = "name \"{0}\" is accepted")
     @ValueSource(strings = {"Harsh", "Harshit",
-            "Harsh Kumar"})
+            "Harsh Kumar", "Anne-Marie", "O'Brien"})
     void validNamesAreAccepted(String name) {
         assertTrue(book.isValidName(name));
     }

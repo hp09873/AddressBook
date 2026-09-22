@@ -11,7 +11,7 @@ public class AddressBook {
 
     //Name Input Validation
     public boolean isValidName(String name){
-        return name != null && !name.trim().isEmpty() && name.trim().matches("[a-zA-Z ]+");
+        return name != null && !name.trim().isEmpty() && name.trim().matches("[a-zA-Z]+([ '-][a-zA-Z]+)*");
     }
     //Number Validation
     public boolean isValidPhoneNumber(String phoneNumber){
@@ -92,6 +92,10 @@ public class AddressBook {
     }
     public boolean contactExists(int contactId) {
         return contacts.containsKey(contactId);
+    }
+    //GetallContacts
+    public List<Contact> getAllContacts() {
+        return new ArrayList<>(contacts.values());
     }
 
     //Edit an Existing Contact
